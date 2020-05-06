@@ -1,6 +1,6 @@
 import React from "react";
 import { API_URL, API_KEY } from '../api';
-import MovieItem from './MovieItem';
+import { MovieItem } from './MovieItem';
 
 class App extends React.Component {
   constructor() {

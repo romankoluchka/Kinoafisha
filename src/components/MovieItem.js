@@ -1,40 +1,57 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
-const MovieItem = (props) => {
+const useStyles = makeStyles({
+	root: {
+		width: 'auto',
+	},
+});
+
+export const MovieItem = (props) => {
+
+	const classes = useStyles();
 	const { movie, addMovieToWatchList, removeMovieFromWatchList } = props;
-	const [isInWatchlist, setIsInWatchlist] = useState(false)
+	const [isInWatchlist, setIsInWatchlist] = useState(false);
 
 	return (
-		<div className='card'>
-			<img className='card-img-top'
+		<Card className={classes.root}>
+			<CardMedia
+				component="img"
+				alt={movie.title}
+				height="auto"
 				src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
-				alt=''
 			/>
-			<div className='card-body'>
-				<h6 className='card-title'>{movie.title}</h6>
-				<div className='d-flex justify-content-between align-items-center'>
-					<p className='mb-0'>Rating: {movie.vote_average}</p>
-					{isInWatchlist === true ? (
-						<button className='btn btn-success'
-							onClick={() => {
-								setIsInWatchlist(false)
-								removeMovieFromWatchList(movie)
-							}}>
-							Remove from WatchList
-						</button>
-					) : (
-							<button
-								className='btn btn-secondary'
-								onClick={() => {
-									setIsInWatchlist(true)
-									addMovieToWatchList(movie)
-								}}>
-								Add to WatchList
-							</button>)}
-				</div>
-			</div>
-		</div>
+			<CardContent>
+				<Typography gutterBottom variant="h5" component="h2">
+					{movie.title}
+				</Typography>
+				<Typography variant="body" component="p">
+					Rating: {movie.vote_average}
+				</Typography>
+			</CardContent>
+			<CardActions>
+				{isInWatchlist === true ?
+					<Button color="secondary" variant="contained" outline
+						onClick={() => {
+							setIsInWatchlist(false)
+							removeMovieFromWatchList(movie)
+						}}>
+						Remove from WatchList
+        </Button> :
+					<Button color="primary" variant="contained"
+						onClick={() => {
+							setIsInWatchlist(true)
+							addMovieToWatchList(movie)
+						}}>
+						Add to WatchList
+        </Button>}
+			</CardActions>
+		</Card>
 	);
 };
-
-export default MovieItem;
