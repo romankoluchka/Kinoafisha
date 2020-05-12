@@ -1,6 +1,7 @@
 import React from "react";
 import { API_URL, API_KEY } from '../api';
 import { MovieItem } from './MovieItem';
+import { MovieTabs } from './MovieTabs';
 
 class App extends React.Component {
   constructor() {
@@ -14,16 +15,26 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.getMovie()
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState.sort_by !== this.state.sort_by) {
+      this.getMovie();
+    }
+  };
+
+  getMovie = () => {
     fetch(`${API_URL}/discover/movie?api_key=${API_KEY}&sort_by=${this.state.sort_by}`)
-      .then((response) => {
+      .then(response => {
         return response.json();
       })
-      .then((data) => {
+      .then(data => {
         this.setState({
           movies: data.results
         })
       })
-  }
+  };
 
   addMovieToWatchList = movie => {
     const updateMoviesWatchList = [...this.state.watchList, movie];
@@ -38,11 +49,25 @@ class App extends React.Component {
     this.setState({ watchList: updateMovies })
   };
 
+  updateSortBy = value => {
+    this.setState({
+      sort_by: value
+    })
+  }
+
   render() {
     return (
       <div className='container'>
         <div className='row'>
           <div className='col-9'>
+            <div className='row mb-4'>
+              <div className='col-12'>
+                <MovieTabs
+                  sort_by={this.state.sort_by}
+                  updateSortBy={this.updateSortBy}
+                />
+              </div>
+            </div>
             <div className='row'>
               {this.state.movies.map(movie => {
                 return (

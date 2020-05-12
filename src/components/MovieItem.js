@@ -31,13 +31,13 @@ export const MovieItem = (props) => {
 				<Typography gutterBottom variant="h5" component="h2">
 					{movie.title}
 				</Typography>
-				<Typography variant="body" component="p">
+				<Typography variant="body1" component="p">
 					Rating: {movie.vote_average}
 				</Typography>
 			</CardContent>
 			<CardActions>
 				{isInWatchlist === true ?
-					<Button color="secondary" variant="contained" outline
+					<Button color="secondary" variant="contained"
 						onClick={() => {
 							setIsInWatchlist(false)
 							removeMovieFromWatchList(movie)
